@@ -3,10 +3,12 @@
 module.exports = function countCats(mat) {
  
   let counter = 0;
-  mat = [].concat(...mat).forEach(element => {
-      if(element==='^^') counter++
-    });
-  
-  
+   mat = [].concat(...mat);
+  let j = mat.length; 
+  for (let i = 0; i < j; i++) {
+      if(mat[i]==='^^') ++counter;
+  };
   return counter;
 };
+
+   
