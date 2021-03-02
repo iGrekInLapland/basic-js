@@ -8,36 +8,36 @@ module.exports = function transform(array) {
       throw new Error("something is wrong"); // (*)
     }
 arr = array.slice(0)
-  for(let i = 0; i < array.length; i++){
+  for(let key = 0; key < array.length; key++){
        
-    switch (arr[i]) {
+    switch (arr[key]) {
     case '--discard-next' :
-      if (i==array.length-1) {
-      arr.splice(i, 1, ' ');
-      break;
-    }
-      arr.splice(i, 2, ' ', ' ');
+      if (key==array.length-1) {
+      arr.splice(key, 1, ' ');
+      }else{
+      arr.splice(key, 2, ' ', ' ');
+      }
       break;
     case '--discard-prev' : 
-      if ((i-1)<0) {
-        arr.splice(i, 1, ' ');
-        break;
+      if ((key-1)<0) {
+        arr.splice(key, 1, ' ');
+      }else{
+      arr.splice(key-1, 2, ' ', ' ');
       }
-      arr.splice(i-1, 2, ' ', ' ');
       break;
     case '--double-next' : 
-      if (i==array.length-1) {
-        arr.splice(i, 1);
-        break;
+      if (key==array.length-1) {
+        arr.splice(key, 1);
+      }else{
+      arr.splice(key, 1, arr[key+1]);
       }
-      arr.splice(i, 1, arr[i+1]);
       break;
     case '--double-prev' :
-      if ((i-1) < 0) {
-        arr.splice(i, 1);
-        break;
+      if ((key-1) < 0) {
+        arr.splice(key, 1);
+      }else{
+      arr.splice(key, 1, arr[key-1])
       }
-      arr.splice(i, 1, arr[i-1])
       break;
     }
    
@@ -53,3 +53,4 @@ arr = array.slice(0)
     throw e
    }
 }
+
