@@ -2,55 +2,31 @@ const CustomError = require("../extensions/custom-error");
 
 module.exports = function transform(array) {
   let arr = [];
-  try {
- 
+  
     if (!Array.isArray(array)) {
       throw new Error("something is wrong"); // (*)
     }
 arr = array.slice(0)
-  for(let key = 0; key < array.length; key++){
+  for(let i = 0; i < array.length; i++){
        
-    switch (arr[key]) {
+    switch (arr[i]) {
     case '--discard-next' :
-      if (key==array.length-1) {
-      arr.splice(key, 1, ' ');
-      }else{
-      arr.splice(key, 2, ' ', ' ');
-      }
+        arr[i+1]=undefined;
+        arr[i]=undefined;
+        i++;
       break;
     case '--discard-prev' : 
-      if ((key-1)<0) {
-        arr.splice(key, 1, ' ');
-      }else{
-      arr.splice(key-1, 2, ' ', ' ');
-      }
+        arr[i-1]=undefined;
+        arr[i]=undefined;
       break;
     case '--double-next' : 
-      if (key==array.length-1) {
-        arr.splice(key, 1);
-      }else{
-      arr.splice(key, 1, arr[key+1]);
-      }
+        arr[i] = arr[i+1];
+        i++
       break;
     case '--double-prev' :
-      if ((key-1) < 0) {
-        arr.splice(key, 1);
-      }else{
-      arr.splice(key, 1, arr[key-1])
-      }
+      arr[i] = arr[i-1];
       break;
     }
-   
   }
-  for (let i = 0; i < arr.length; i++){
-    if(arr[i]===' '|| arr[i] == undefined){
-      arr.splice(i, 1);
-      i--;
-    }
-  }
-  return arr;
-  }catch(e) {
-    throw e
-   }
+  return arr.filter(item => item !==undefined);
 }
-
