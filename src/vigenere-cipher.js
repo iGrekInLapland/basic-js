@@ -1,57 +1,47 @@
-const CustomError = require("../extensions/custom-error");
+  const CustomError = require("../extensions/custom-error");
 
-class VigenereCipheringMachine {
-  constructor(directly){
-    this.directly = directly
-  }
-  encrypt(m, k) {
-    
-   // if(!!m || !!k) throw new Error('something is wrong');
-    let a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let res = [];
-    m = m.toUpperCase();
-    k = k.toUpperCase();
-    let j = 0; 
-    for(let i = 0; i < m.length; i++){
-     
-      let s;
-      if( a.indexOf(m[i]) === -1){
-        res.push(m[i]);
-        j--
-      }else{
-        s = a.indexOf(m[i]) + a.indexOf(k[((j < k.length) ? j : j%k.length )]);
-      res.push(a[((s<a.length) ? s : s%a.length )])
-      }   
-      j++
-    }
-    if(this.directly === true ||this.directly === undefined) return res = res.join(''); 
-    return res.reverse().join('')
-  }    
-  decrypt(m, k){
-   // if(!!m || !!k) throw new Error("something is wrong");
-      let a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      let res = [];
-      m = m.toUpperCase();
-      k = k.toUpperCase();
-      let j = 0; 
-      for(let i = 0; i < m.length; i++){
-       
-        let s;
-        if( a.indexOf(m[i]) === -1){
-          res.push(m[i]);
-          j--
-        }else{
-          s = a.indexOf(m[i]) - a.indexOf(k[((j < k.length) ? j : j%k.length )]);
-          (s < 0)? s = s + a.length : s;
-        res.push(a[((s<a.length) ? s : s%a.length )])
-        }   
-        j++
+      class VigenereCipheringMachine {
+        constructor(directly = true) {
+          this.directly = directly;
+          this.alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        }
+
+        encrypt(str, key) {
+          const msg = str.toUpperCase().split("");
+          const keys = key.toUpperCase().split("");
+          let pos = 0;
+
+          let result = msg.map((item) => {
+            if (this.alphabet.includes(item)) {
+              let i =
+                (this.alphabet.indexOf(keys[pos]) +
+                  this.alphabet.indexOf(item)) %
+                this.alphabet.length;
+              pos = (pos + 1) % keys.length;
+              return this.alphabet[i];
+            }
+            return item;
+          });
+          return this.directly ? result.join("") : result.reverse().join("");
+        }
+
+        decrypt(str, key) {
+          const msg = str.toString().toUpperCase().split("");
+          const keys = key.toString().toUpperCase().split("");
+          let pos = 0;
+
+          let result = msg.map((item) => {
+            if (this.alphabet.includes(item)) {
+              let i =
+                this.alphabet.indexOf(item) - this.alphabet.indexOf(keys[pos]);
+              if (i < 0) i += this.alphabet.length;
+              pos = (pos + 1) % keys.length;
+              return this.alphabet[i];
+            }
+            return item;
+          });
+          return this.directly ? result.join("") : result.reverse().join("");
+        }
       }
-      if(this.directly === true ||this.directly === undefined) return res = res.join(''); 
-    return res.reverse().join('')
-    }
-  }
 
-
-module.exports = VigenereCipheringMachine;
-
+      module.exports = VigenereCipheringMachine;
