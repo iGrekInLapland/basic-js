@@ -1,14 +1,14 @@
-//const CustomError = require("../extensions/custom-error");
+const CustomError = require("../extensions/custom-error");
 
 module.exports = function countCats(mat) {
- 
-  let counter = 0;
-   mat = [].concat(...mat);
-  let j = mat.length; 
-  for (let i = 0; i < j; i++) {
-      if(mat[i]==='^^') ++counter;
-  };
-  return counter;
-};
+  let res = []
 
+  for(let i = 0; i < mat.length; i++) {
+     for(let j = 0; j < mat[i].length; j++) {
+       res.push(mat[i][j])
+    }
+  }
+  res = res.filter((item) => item === '^^')
+  return res.length
+};
    
