@@ -1,15 +1,12 @@
-const CustomError = require("../extensions/custom-error");
-
-const MODERN_ACTIVITY= 15;
-const HALF_LIFE_PERIOD= 5730;
+const MODERN_ACTIVITY = 15
+const HALF_LIFE_PERIOD = 5730
 
 module.exports = function dateSample(x) {
-   if(typeof(x) !== 'string'){
-    return false;
+  const num = parseFloat(x)
+  const age = num >= 1 && num < 15 ? num : NaN
+  if (!isNaN(age) && typeof x === "string") {
+    return Math.ceil(Math.log(MODERN_ACTIVITY / age) * HALF_LIFE_PERIOD / 0.693)
+  } else {
+    return false
   }
-  if(Number.isFinite(+x) || Number.isNaN(+x)){
-    return false;
-  }
-
-  return Math.log(MODERN_ACTIVITY / x) / (Math.LN2 / HALF_LIFE_PERIOD);
-};
+}
